@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8f7f0"><meta name="description" content="Pilih kartu pos, jelajahi destinasi, dan susun rencana perjalananmu di Sela.">
+<title>Atlas perjalanan Sela</title>
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml"><link rel="preload" as="image" href="assets/departure.webp" fetchpriority="high"><link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="atlas.css">
+<script src="data.js" defer></script><script src="world-data.js" defer></script><script src="app.js" defer></script><script src="motion.js" defer></script><script src="atlas.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Langsung ke konten</a>
+<header class="site-header">
+ <div class="head-inner">
+ <a class="brand" href="#jelajahi" aria-label="Sela beranda"><img src="assets/mark.svg" width="39" height="39" alt=""><span>sela<span class="brand-dot">.</span></span></a>
+ <nav aria-label="Navigasi utama"><a data-nav="jelajahi" href="#jelajahi">Jelajahi</a><a data-nav="tersimpan" href="#tersimpan">Tersimpan <span id="saved-count" hidden></span></a></nav>
+ <div class="nav-actions"><a class="plan-nav" aria-label="Rencana saya" data-nav="rencana" href="#rencana"><i data-icon="suitcase"></i><span>Rencana<span class="plan-suffix"> saya</span></span></a><button class="menu-toggle" id="menu-toggle" aria-label="Buka menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="menu-drawer"><span></span><span></span></button></div>
+ </div>
+</header>
+<main id="content" tabindex="-1">
+ <div id="home">
+ <section class="cine" id="sampul" aria-label="Sorotan perjalanan">
+  <div class="cine-screen">
+   <div class="cine-images" aria-hidden="true"><img class="scene-photo active" src="assets/departure.webp" alt="" fetchpriority="high"><img class="scene-photo" src="assets/bali.webp" alt=""><img class="scene-photo" src="assets/venezia.webp" alt=""></div>
+   <div class="cine-scrim"></div>
+   <div class="cine-body">
+    <div class="cine-copy"><div class="flight-label"><span></span><span id="scene-kicker">ATLAS PERJALANAN</span></div>
+    <h1 id="hero-heading"><span>Ke mana</span><em>kita pergi?</em></h1>
+    <p id="scene-summary">Buka kartu pos dari 18 destinasi, lalu pilih tempat yang ingin kamu kunjungi.</p>
+    <a class="button cover-cta" id="scene-cta" href="#indeks"><i data-icon="compass"></i><span>Jelajahi destinasi</span></a></div>
+    <div class="cine-strip"><span class="chapter-label">SOROTAN <b id="chapter-count">1 dari 3</b></span>
+    <div class="chapters" role="group" aria-label="Pilih foto sorotan">
+     <button data-scene="0" aria-label="Sorotan Di atas awan" aria-pressed="true"><img src="assets/departure.webp" alt=""><span>Di atas awan</span></button>
+     <button data-scene="1" aria-label="Sorotan Tegallalang" aria-pressed="false"><img src="assets/bali.webp" alt=""><span>Tegallalang</span></button>
+     <button data-scene="2" aria-label="Sorotan Venesia" aria-pressed="false"><img src="assets/venezia.webp" alt=""><span>Venesia</span></button>
+    </div></div>
+   </div>
+   <div class="cine-rail"><button class="scroll-chapter" id="jump-atlas"><span class="scroll-cue"></span>Ke kartu pos</button><div class="cover-tools"><a class="cover-atlas" href="#peta"><i data-icon="compass"></i> Buka globe</a><button class="credit-link" data-credits>Kredit foto</button></div></div>
+  </div>
+ </section>
+ <section class="hero atlas-studio" id="kartu" aria-labelledby="studio-title" tabindex="-1">
+   <div class="hero-content">
+    <div class="atlas-label"><span class="mini-rule"></span><span id="studio-kicker">Kartu pos</span></div>
+    <h2 id="studio-title">Positano</h2>
+    <div class="studio-location" id="studio-location"></div><p id="studio-intro"></p>
+    <a class="button primary" id="studio-open" href="#tempat/positano"><i data-icon="compass"></i><span>Lihat destinasi</span></a>
+   <details class="route-tool" id="route-tool" hidden><summary>Ukur jarak antardestinasi <i data-icon="down"></i></summary>
+    <div class="route-fields"><label>Dari<select id="route-from"></select></label><label>Ke<select id="route-to"></select></label></div>
+    <p class="route-distance" id="route-distance" aria-live="polite"></p><small>Jarak terpendek di permukaan bumi.</small></details>
+   </div>
+   <div class="gallery" role="region" aria-roledescription="karusel" aria-label="Kartu pos destinasi">
+    <div class="view-switch" role="group" aria-label="Tampilan koleksi"><button id="view-cards" aria-pressed="true">Kartu pos</button><button id="view-globe" aria-pressed="false">Globe</button></div>
+    <canvas id="contour" aria-hidden="true"></canvas>
+    <div class="deck" id="deck"></div>
+    <div class="globe-view" id="globe-view" hidden><canvas id="globe" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown" role="group" aria-label="Globe interaktif" aria-describedby="deck-hint"></canvas>
+    <div class="globe-tools" aria-label="Kontrol globe"><button id="zoom-in" aria-label="Perbesar globe">+</button><button id="zoom-out" aria-label="Perkecil globe">−</button><button id="globe-center" aria-label="Pusatkan globe pada destinasi"><i data-icon="place"></i></button></div></div>
+    <div class="deck-controls"><button id="prev" class="round" aria-label="Kartu pos sebelumnya"><i data-icon="left"></i></button><span id="slide-count" aria-live="polite"></span><button id="next" class="round" aria-label="Kartu pos berikutnya"><i data-icon="right"></i></button></div>
+    <span class="deck-hint" id="deck-hint">Geser atau ketuk untuk melihat kartu berikutnya.</span>
+   </div>
+ </section>
+ <section class="world" id="dunia" aria-labelledby="world-title" tabindex="-1"><div class="world-inner">
+   <div class="world-lead"><p class="world-label"><i data-icon="compass"></i> Atlas dunia</p>
+    <h2 id="world-title">Jelajahi<br><em>enam benua.</em></h2><p class="world-intro">Pilih benua untuk melihat destinasinya.</p>
+    <div class="terrain-card"><div id="terrain" aria-hidden="true"><canvas></canvas></div>
+    <div class="terrain-caption"><span>Ilustrasi relief</span><button type="button" id="terrain-pulse">Kirim gelombang</button></div></div>
+   </div><nav class="world-menu" id="world-menu" aria-label="Jelajahi per benua"></nav></div></section>
+ <section class="index-section" id="indeks" aria-labelledby="index-title" tabindex="-1">
+  <div class="index-title-row"><div class="index-titles"><span class="edge-mark" aria-hidden="true"></span><h2 id="index-title">Indeks destinasi</h2><span id="index-count" class="number-tag"></span></div>
+  <label class="search"><i data-icon="search"></i><input id="query" type="search" placeholder="Cari destinasi" aria-label="Cari nama destinasi atau negara"></label></div>
+  <div class="filter-line"><div id="filters" class="filters" role="group" aria-label="Kategori destinasi"></div><label class="region-control">Benua <select id="region-filter"><option value="">Semua benua</option></select></label></div>
+  <div class="tiles" id="tiles"></div><p class="sr" id="index-live" aria-live="polite"></p>
+ </section></div>
+ <section class="collection page" id="collection" hidden></section>
+ <section class="plans page" id="plans" hidden></section>
+ <article id="detail" hidden></article>
+</main>
+<footer><a class="brand small" href="#jelajahi" aria-label="Sela beranda"><img src="assets/mark.svg" width="27" height="27" alt=""><span>sela<span class="brand-dot">.</span></span></a><span>Atlas perjalanan</span><button id="top" aria-label="Kembali ke atas">Kembali ke atas <i data-icon="up"></i></button></footer>
+<div id="plane-pointer" aria-hidden="true" hidden><svg viewBox="0 0 32 32"><g class="flight-wake" fill="none" stroke="#eed4a7" stroke-width="1.1" stroke-linecap="round"><path d="M12 24v6m8-6v5"/></g><path class="plane-shape" d="M16 2c1.1 0 1.8 2.9 1.9 4.8l.4 5.3 9.5 6.5v2.5l-9.7-3.6-.5 6.3 3.1 2.3v1.7l-4.7-1.5-4.7 1.5v-1.7l3.1-2.3-.5-6.3-9.7 3.6v-2.5l9.5-6.5.4-5.3C14.2 4.9 14.9 2 16 2Z"/></svg></div>
+<dialog id="menu-drawer" aria-labelledby="menu-title">
+ <div class="drawer-panel"><div class="drawer-top"><span id="menu-title">Menu</span><button id="menu-close" class="round" aria-label="Tutup menu"><i data-icon="close"></i></button></div>
+ <nav aria-label="Menu Sela"><a href="#jelajahi">Beranda</a><a href="#kartu">Kartu pos</a><a href="#peta">Globe interaktif</a><a href="#dunia">Jelajahi benua</a><a href="#indeks">Indeks destinasi</a><a href="#tersimpan">Tersimpan</a><a href="#rencana">Rencana saya</a></nav>
+ <img class="drawer-photo" src="assets/window.webp" loading="lazy" alt="Sayap pesawat di atas awan saat matahari terbit"><div class="drawer-bottom"><button id="toggle-motion" aria-pressed="true">Efek gerak <b>Aktif</b></button><button data-credits>Kredit foto</button></div></div>
+</dialog>
+<dialog id="credits-dialog" aria-labelledby="credit-title"><div class="dialog-top"><h2 id="credit-title">Kredit foto</h2><button class="round" id="credit-close" aria-label="Tutup kredit foto"><i data-icon="close"></i></button></div><ul id="credits-list"></ul><small>Peta globe menggunakan data <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>.</small></dialog>
+<div id="toast" role="status"></div>
+<dialog id="planner-dialog" aria-labelledby="dialog-heading"><form id="plan-form">
+<div class="dialog-top"><span class="atlas-label">RENCANA PERJALANAN</span><button type="button" class="round" aria-label="Tutup formulir" data-do="close-form"><i data-icon="close"></i></button></div>
+<h2 id="dialog-heading"></h2><p id="dialog-sub"></p><input type="hidden" name="dest">
+<div class="form-row"><label>Tanggal mulai <input type="date" name="date" required></label><label>Durasi <select name="days"><option value="1">1 hari</option><option value="2">2 hari</option><option value="3">3 hari</option></select></label></div>
+<label>Catatan <span>(opsional)</span><textarea name="note" rows="3" maxlength="600" placeholder="Misalnya, mampir ke pasar pagi"></textarea></label>
+<button class="button primary"><i data-icon="suitcase"></i>Simpan rencana</button>
+</form></dialog>
+</body></html>
